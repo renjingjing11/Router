@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <a href="#/">主页</a></div>
+    <div>
+        <a href="#/page">首页</a></div>
+    <div>
+        <a href="#/list">列表</a></div>
+    <div id="hashBox"></div>
+    <script>
+        class Router {
+            constructor({
+                routes
+            }) {
+                this.hashBox = document.getElementById("hashBox")
+                this.routes = routes
+                this.events = {}
+                this.routes.forEach((item, index) => {
+                    this.events[item.path] = function() {
+                        hashBox.innerHTML = item.component
+                    }
+                })
+                this.init()
+            }
+            init() {
+                window.addEventListener("hashchange", this.updateView.bind(this))
+            }
+            updateView() {
+                let url = window.location.hash.slice(1)
+                console.log(this.events)
+                this.events[url]()
+            }
+        }
+        new Router({
+            routes: [{
+                path: "/",
+                component: '主页'
+            }, {
+                path: "/page",
+                component: '首页'
+            }, {
+                path: "/list",
+                component: "列表"
+            }]
+        })
+    </script>
+</body>
+
+</html>

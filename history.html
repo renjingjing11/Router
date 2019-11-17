@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <a href="javascript:;" data-path='/'>主页</a></div>
+    <div>
+        <a href="javascript:;" data-path='/page'>首页</a></div>
+    <div>
+        <a href="javascript:;" data-path='/list'>列表</a></div>
+    <div id="historyBox"></div>
+    <script>
+        class Router {
+            constructor({
+                routes
+            }) {
+                this.routes = routes
+                this.pushUrl()
+            }
+            pushUrl() {
+                let Aall = document.querySelectorAll("a");
+                let newAll = Array.from(Aall)
+                console.log(newAll)
+                newAll.forEach((item, index) => {
+                    item.onclick = () => {
+                        let path = item.getAttribute('data-path')
+                        window.history.pushState({}, null, path)
+                        this.updateView(path)
+                    }
+                })
+            }
+            updateView(path) {
+                let history = document.getElementById('historyBox')
+                history.innerHTML = this.routes.filter(item => item.path === path)[0].component
+            }
+        }
+        new Router({
+            routes: [{
+                path: "/",
+                component: '主页'
+            }, {
+                path: "/page",
+                component: '首页'
+            }, {
+                path: "/list",
+                component: "列表"
+            }]
+        })
+    </script>
+</body>
+
+</html>
